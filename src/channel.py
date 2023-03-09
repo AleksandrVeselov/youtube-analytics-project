@@ -18,6 +18,7 @@ class Channel:
         print(json.dumps(channel, indent=2, ensure_ascii=False))
 
     def print_playlists_info(self) -> None:
+        """Выводит в консоль информацию о плейлистах канала"""
         playlists = self.youtube.playlists().list(channelId=self.channel_id,
                                              part='contentDetails,snippet',
                                              maxResults=50,
@@ -27,6 +28,7 @@ class Channel:
             print()
 
     def print_info_about_playlist(self, playlist_id) -> None:
+        """Выводит информацию о плейлисте по переданному ID"""
         playlist_videos = self.youtube.playlistItems().list(playlistId=playlist_id,
                                                        part='contentDetails',
                                                        maxResults=50,
@@ -34,6 +36,7 @@ class Channel:
         print(json.dumps(playlist_videos, indent=2, ensure_ascii=False))
 
     def print_info_about_video(self, video_id):
+        """Выводит информацию о видео по переданному ID"""
         video_response = self.youtube.videos().list(part='snippet,statistics,contentDetails,topicDetails',
                                                id=video_id
                                                ).execute()
