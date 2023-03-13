@@ -10,6 +10,7 @@ class Channel:
 
     def __init__(self, channel_id: str) -> None:
         """Экземпляр инициализируется id канала. Дальше все данные будут подтягиваться по API."""
+
         self.__channel_id = channel_id
         self.channel = Channel.youtube.channels().list(id=self.__channel_id, part='snippet,statistics').execute()
         self.title = self.channel['items'][0]['snippet']['title']
@@ -37,4 +38,5 @@ class Channel:
         """Запись информации о канале в file_name.json"""
         with open(file_name, 'w') as json_file:
             json.dump(self.channel, json_file, ensure_ascii=False)
+
 
