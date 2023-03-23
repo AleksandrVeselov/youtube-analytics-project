@@ -41,8 +41,6 @@ class PLVideo(Video):
         super().__init__(video_id)
         self.playlist_id = playlist_id
 
-    def __str__(self):
-        return self.video_title
 
 
 
