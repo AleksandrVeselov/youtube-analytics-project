@@ -41,11 +41,10 @@ class PLVideo(channel.Channel):
         self.like_count = self.video_response['items'][0]['statistics']['likeCount']
         self.playlist_id = playlist_id
 
+
     def __str__(self):
         return self.video_title
 
-
-video2 = PLVideo('BBotskuyw_M', 'PL7Ntiz7eTKwrqmApjln9u4ItzhDLRtPuD')
 
 
 
