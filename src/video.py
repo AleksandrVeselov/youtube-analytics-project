@@ -1,23 +1,52 @@
+# -*- coding: utf-8 -*-
 from src import channel
 
 
 class Video(channel.Channel):
-    """Класс для видео"""
 
     def __init__(self, video_id):
-        """Инициализация атрибутов класса"""
+        """РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ Р°С‚СЂРёР±СѓС‚РѕРІ РєР»Р°СЃСЃР°"""
 
-        # Получение информации о видео
+        # РџРѕР»СѓС‡РµРЅРёРµ РёРЅС„РѕСЂРјР°С†РёРё Рѕ РІРёРґРµРѕ
         self.video_response = self.youtube.videos().list(part='snippet,statistics,contentDetails,topicDetails',
                                        id=video_id
                                        ).execute()
 
-        # Заполнение атрибутов соответсвующими данными
+        # Р—Р°РїРѕР»РЅРµРЅРёРµ Р°С‚СЂРёР±СѓС‚РѕРІ СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‰РёРјРё РґР°РЅРЅС‹РјРё
         self.video_id = video_id
         self.video_title = self.video_response['items'][0]['snippet']['title']
         self.video_url = f'https://www.youtube.com/video/{self.video_id}'
         self.views_count = self.video_response['items'][0]['statistics']['viewCount']
         self.like_count = self.video_response['items'][0]['statistics']['likeCount']
+
+    def __str__(self):
+        return self.video_title
+
+
+class PLVideo(channel.Channel):
+
+    def __init__(self, video_id, playlist_id):
+        """РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ Р°С‚СЂРёР±СѓС‚РѕРІ РєР»Р°СЃСЃР°"""
+
+        # РџРѕР»СѓС‡РµРЅРёРµ РёРЅС„РѕСЂРјР°С†РёРё Рѕ РІРёРґРµРѕ
+        self.video_response = self.youtube.videos().list(part='snippet,statistics,contentDetails,topicDetails',
+                                       id=video_id
+                                       ).execute()
+
+        # Р—Р°РїРѕР»РЅРµРЅРёРµ Р°С‚СЂРёР±СѓС‚РѕРІ СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‰РёРјРё РґР°РЅРЅС‹РјРё
+        self.video_id = video_id
+        self.video_title = self.video_response['items'][0]['snippet']['title']
+        self.video_url = f'https://www.youtube.com/video/{self.video_id}'
+        self.views_count = self.video_response['items'][0]['statistics']['viewCount']
+        self.like_count = self.video_response['items'][0]['statistics']['likeCount']
+        self.playlist_id = playlist_id
+
+    def __str__(self):
+        return self.video_title
+
+
+video2 = PLVideo('BBotskuyw_M', 'PL7Ntiz7eTKwrqmApjln9u4ItzhDLRtPuD')
+
 
 
 
