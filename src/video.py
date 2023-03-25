@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 from src import channel
 from googleapiclient.discovery import build
 import os
@@ -18,6 +17,7 @@ class Video:
         self.video_url = f'https://www.youtube.com/video/{self.video_id}'
         self.views_count = self.video_response['items'][0]['statistics']['viewCount']
         self.like_count = self.video_response['items'][0]['statistics']['likeCount']
+        self.duration = self.video_response['items'][0]['contentDetails']['duration']
 
     @staticmethod
     def get_info(video_id):
