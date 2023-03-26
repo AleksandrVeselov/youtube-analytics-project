@@ -3,13 +3,13 @@ from googleapiclient.discovery import build
 import os
 
 
-class Video:
+class Video(channel.Youtube):
 
     def __init__(self, video_id):
         """Инициализация атрибутов класса"""
 
         # Получение информации о видео
-        self.video_response = self.get_info(video_id)
+        self.video_response = self.get_video_info(video_id)
 
         # Заполнение атрибутов соответствующими данными
         self.video_id = video_id
@@ -18,17 +18,6 @@ class Video:
         self.views_count = self.video_response['items'][0]['statistics']['viewCount']
         self.like_count = self.video_response['items'][0]['statistics']['likeCount']
         self.duration = self.video_response['items'][0]['contentDetails']['duration']
-
-    @staticmethod
-    def get_info(video_id):
-        """Получение информации о видео"""
-
-        API_KEY: str = os.getenv('YOUTUBE_API_KEY')
-        youtube = build('youtube', 'v3', developerKey=API_KEY)
-        video_response = youtube.videos().list(part='snippet,statistics,contentDetails,topicDetails',
-                                       id=video_id
-                                       ).execute()
-        return video_response
 
     def __str__(self):
         return self.video_title
