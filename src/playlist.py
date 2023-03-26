@@ -1,10 +1,7 @@
 # -*- coding: utf-8 -*-
-import os
-from googleapiclient.discovery import build
-from src import video
+from src import video, channel
 from datetime import timedelta
 import isodate
-from src import channel
 
 
 class PlayList(channel.Youtube):
@@ -28,7 +25,6 @@ class PlayList(channel.Youtube):
         time = timedelta()  # Начальная длительность
 
         for video_id in self.playlist_videos:
-            print(video_id.duration)
             time += isodate.parse_duration(video_id.duration)
         return time
 
@@ -45,7 +41,7 @@ class PlayList(channel.Youtube):
 
     def show_best_video(self) -> str:
         """
-        Нахождение видео с максимальным количеством лайков и возврещение ссылки на него
+        Нахождение видео с максимальным количеством лайков и возвращение ссылки на него
         """
 
         best_video = max(self.playlist_videos, key=lambda x: int(x.like_count))

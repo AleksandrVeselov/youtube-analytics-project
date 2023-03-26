@@ -12,7 +12,7 @@ class Youtube:
     @classmethod
     def get_playlist_info(cls, playlist_id: str) -> dict:
         """
-        На вход подается id плейлиста, возвращает словарь с информацией о нем
+        Метод для получения информации о плейлисте Youtube по его id
         """
 
         playlist_response = cls.__youtube.playlists().list(id=playlist_id,
@@ -23,7 +23,7 @@ class Youtube:
 
     @classmethod
     def get_video_info(cls, video_id: str) -> dict:
-        """Метод для получения информации о видео из Youtube. На вход подается id видео"""
+        """Метод для получения информации о видео из Youtube по его id"""
 
         video_response = cls.__youtube.videos().list(part='snippet,statistics,contentDetails,topicDetails',
                                                      id=video_id
