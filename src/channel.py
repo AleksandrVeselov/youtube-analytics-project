@@ -3,27 +3,70 @@ import os
 from googleapiclient.discovery import build
 
 
-class Channel:
+class Youtube:
+    """Базовый класс для работы с видео, плейлистами и каналами"""
+
+    __API_KEY: str = os.getenv('YOUTUBE_API_KEY')
+    __youtube = build('youtube', 'v3', developerKey=__API_KEY)
+
+    @classmethod
+    def get_playlist_info(cls, playlist_id: str) -> dict:
+        """
+        Метод для получения информации о плейлисте Youtube по его id
+        """
+
+        playlist_response = cls.__youtube.playlists().list(id=playlist_id,
+                                                           part='contentDetails,snippet',
+                                                           maxResults=50,
+                                                           ).execute()
+        return playlist_response
+
+    @classmethod
+    def get_video_info(cls, video_id: str) -> dict:
+        """Метод для получения информации о видео из Youtube по его id"""
+
+        video_response = cls.__youtube.videos().list(part='snippet,statistics,contentDetails,topicDetails',
+                                                     id=video_id
+                                                     ).execute()
+        return video_response
+
+    @classmethod
+    def get_channel_info(cls, channel_id: str) -> dict:
+        """Метод для получения информации о канале Youtube по его id"""
+
+        channel_response = cls.__youtube.channels().list(id=channel_id, part='snippet,statistics').execute()
+
+        return channel_response
+
+    @classmethod
+    def get_videos_from_playlist(cls, playlist_id: str) -> dict:
+        """Получение информации о всех видео из плейлиста"""
+        playlist_videos = cls.__youtube.playlistItems().list(playlistId=playlist_id,
+                                                             part='contentDetails',
+                                                             maxResults=50,
+                                                             ).execute()
+        return playlist_videos
+
+    @classmethod
+    def get_service(cls):
+        """Возвращает объект для работы с API вне класса"""
+        return cls.__youtube
+
+
+class Channel(Youtube):
     """Класс для ютуб-канала"""
-    API_KEY: str = os.getenv('YOUTUBE_API_KEY')
-    youtube = build('youtube', 'v3', developerKey=API_KEY)
 
     def __init__(self, channel_id: str) -> None:
         """Экземпляр инициализируется id канала. Дальше все данные будут подтягиваться по API."""
 
         self.__channel_id = channel_id
-        self.channel = Channel.youtube.channels().list(id=self.__channel_id, part='snippet,statistics').execute()
+        self.channel = self.get_channel_info(channel_id)
         self.title = self.channel['items'][0]['snippet']['title']
         self.description = self.channel['items'][0]['snippet']['description']
         self.url = f'https://www.youtube.com/channel/{self.__channel_id}'
         self.subscribers_count = self.channel['items'][0]['statistics']['subscriberCount']
         self.video_count = self.channel['items'][0]['statistics']['videoCount']
         self.views_count = self.channel['items'][0]['statistics']['viewCount']
-
-    @classmethod
-    def get_service(cls):
-        """Возвращает объект для работы с API вне класса"""
-        return cls.youtube
 
     @property
     def channel_id(self):
@@ -53,5 +96,3 @@ class Channel:
     def __ge__(self, other) -> bool:
         """Сравнение классов по количеству подписчиков"""
         return int(self.subscribers_count) >= int(other.subscribers_count)
-
-

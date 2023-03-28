@@ -1,5 +1,5 @@
+# -*- coding: utf-8 -*-
 import datetime
-
 from src.playlist import PlayList
 
 if __name__ == '__main__':
@@ -9,7 +9,6 @@ if __name__ == '__main__':
 
     duration = pl.total_duration
     assert str(duration) == "3:41:01"
-    assert issubclass(duration, datetime.timedelta)
+    assert issubclass(type(duration), datetime.timedelta)
     assert duration.total_seconds() == 13261.0
-
-    assert pl.show_best_video() == "https://youtu.be/9Bv2zltQKQA"
+    assert pl.show_best_video() == "https://www.youtube.com/video/9Bv2zltQKQA"
